@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Printec</string>
+
+    <string name="error_no_internet">There is no internet</string>
+
+    <string name="main_btn_sales_label">Sales</string>
+    <string name="main_btn_refund_label">Refund</string>
+    <string name="main_btn_settings_label">Settings</string>
+
+    <string name="settings_toolbar_title">Settings</string>
+    <string name="settings_min_amount_header">Min amount</string>
+    <string name="settings_min_amount_hint">Enter min amount</string>
+    <string name="settings_max_amount_header">Max amount</string>
+    <string name="settings_max_amount_hint">Enter max amount</string>
+    <string name="settings_host_header">Communication host URL</string>
+    <string name="settings_host_hint">Enter host URL</string>
+    <string name="settings_btn_save_label">Save</string>
+
+    <string name="settings_empty_field_error">This field can not be empty</string>
+    <string name="settings_min_amount_error">Must be less than the max amount</string>
+    <string name="settings_max_amount_error">Must be more than the min amount</string>
+    <string name="settings_host_error">Invalid URL</string>
+    <string name="settings_all_fields_error">All fields must be valid</string>
+
+    <string name="sales_toolbar_title">Sales</string>
+    <string name="sales_amount_hint">Enter amount</string>
+    <string name="sales_btn_next_label">Next</string>
+
+    <string name="sales_empty_field_error">Amount can not be empty</string>
+    <string name="sales_min_amount_error">Amount must more than the minimum</string>
+    <string name="sales_max_amount_error">Amount must be less than the maximum</string>
+    <string name="sales_next_btn_error">Enter valid amount please</string>
+
+    <string name="final_next_btn_label">Go home</string>
+    <string name="final_pay_success_prefix">Paid successfully</string>
+    <string name="final_pay_fail_prefix">Fail pay:</string>
+    <string name="final_refund_success_prefix">Refunded successfully</string>
+    <string name="final_refund_fail_prefix">Fail refund:</string>
+
+    <string name="receipt_toolbar_title">Receipt</string>
+    <string name="receipt_number_hint">Enter the receipt number</string>
+    <string name="receipt_btn_next_label">Next</string>
+    <string name="receipt_btn_last_label">Use last receipt</string>
+    <string name="receipt_empty_error">Receipt number can not be empty</string>
+
+    <string name="refund_toolbar_title">Refund</string>
+    <string name="refund_amount_hint">Enter amount</string>
+    <string name="refund_btn_next_label">Next</string>
+    <string name="refund_amount_error">Amount must be more than zero</string>
+
+</resources>
