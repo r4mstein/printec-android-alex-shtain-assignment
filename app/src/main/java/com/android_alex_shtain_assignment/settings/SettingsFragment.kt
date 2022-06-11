@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.core.base.BaseFragment
 import com.android_alex_shtain_assignment.core.extensions.makeSnackbar
 import com.android_alex_shtain_assignment.databinding.FrSettingsBinding
@@ -91,7 +92,7 @@ class SettingsFragment : BaseFragment<FrSettingsBinding>(FrSettingsBinding::infl
             viewModel.actionStatus.collect { actionStatus ->
                 when (actionStatus) {
                     SettingsActionStatus.DataSaved -> {
-                        requireActivity().supportFragmentManager.popBackStack()
+                        findNavController().popBackStack()
                     }
                     SettingsActionStatus.Initial -> {
                         // do nothing
@@ -112,7 +113,7 @@ class SettingsFragment : BaseFragment<FrSettingsBinding>(FrSettingsBinding::infl
                 navigationIcon =
                     ContextCompat.getDrawable(requireContext(), data.toolbarIcon)
                 setNavigationOnClickListener {
-                    requireActivity().supportFragmentManager.popBackStack()
+                    findNavController().popBackStack()
                 }
             }
 
@@ -161,12 +162,5 @@ class SettingsFragment : BaseFragment<FrSettingsBinding>(FrSettingsBinding::infl
             maxAmount = binding?.tietMaxAmount?.text?.toString().orEmpty(),
             host = binding?.tietHostUrl?.text?.toString().orEmpty(),
         )
-    }
-
-    companion object {
-
-        fun newInstance(): SettingsFragment {
-            return SettingsFragment()
-        }
     }
 }

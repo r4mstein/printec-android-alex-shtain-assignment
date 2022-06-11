@@ -4,29 +4,25 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.R
 import com.android_alex_shtain_assignment.core.base.BaseFragment
 import com.android_alex_shtain_assignment.core.extensions.*
-import com.android_alex_shtain_assignment.core.navigator.NavigatorApi
 import com.android_alex_shtain_assignment.databinding.FrReceiptBinding
 import com.android_alex_shtain_assignment.refund.amount.models.RefundAmountUiData
 import com.android_alex_shtain_assignment.refund.amount.status.RefundAmountActionStatus
 import com.android_alex_shtain_assignment.refund.amount.status.RefundAmountUiStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RefundAmountFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::inflate) {
 
     private val viewModel: RefundAmountViewModel by viewModels()
-
-    @Inject
-    lateinit var navigator: NavigatorApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,13 +47,13 @@ class RefundAmountFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::in
                     is RefundAmountActionStatus.ShowFinalFragment -> {
                         activity.enableWindow()
                         hideLoader()
-                        navigator.showFinalFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer,
-                            args = actionStatus.args.copy(
-                                description = requireContext().getString(actionStatus.descriptionPrefix)
-                                        + actionStatus.args.description
-                            )
+                        val arguments = actionStatus.args.copy(
+                            description = requireContext().getString(actionStatus.descriptionPrefix)
+                                    + actionStatus.args.description
+                        )
+                        findNavController().navigate(
+                            resId = R.id.action_global_finalFragment,
+                            args = bundleOf("final_args_key" to arguments)
                         )
                     }
                 }
@@ -136,25 +132,12 @@ class RefundAmountFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::in
                 text = context.getString(data.btnNextLabel)
                 setOnClickListener {
                     data.btnNextClickListener.invoke(
-                        arguments?.getString(RECEIPT_NUMBER_KEY).orEmpty(),
+                        arguments?.getString("receipt_number_key").orEmpty(),
                         tietReceiptNumber.text?.toString().orEmpty()
                     )
                 }
             }
             btnLastReceipt.hideView()
-        }
-    }
-
-    companion object {
-
-        private const val RECEIPT_NUMBER_KEY = "receipt_number_key"
-
-        fun newInstance(receiptNumber: String): RefundAmountFragment {
-            return RefundAmountFragment().apply {
-                arguments = Bundle().apply {
-                    putString(RECEIPT_NUMBER_KEY, receiptNumber)
-                }
-            }
         }
     }
 }

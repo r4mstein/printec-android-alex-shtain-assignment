@@ -3,30 +3,26 @@ package com.android_alex_shtain_assignment.sales
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.R
 import com.android_alex_shtain_assignment.core.base.BaseFragment
 import com.android_alex_shtain_assignment.core.extensions.*
-import com.android_alex_shtain_assignment.core.navigator.NavigatorImpl
 import com.android_alex_shtain_assignment.databinding.FrSalesBinding
 import com.android_alex_shtain_assignment.sales.models.SalesUiData
 import com.android_alex_shtain_assignment.sales.status.SalesActionStatus
 import com.android_alex_shtain_assignment.sales.status.SalesUiStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SalesFragment : BaseFragment<FrSalesBinding>(FrSalesBinding::inflate) {
 
     private val viewModel: SalesViewModel by viewModels()
-
-    @Inject
-    lateinit var navigator: NavigatorImpl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,13 +47,13 @@ class SalesFragment : BaseFragment<FrSalesBinding>(FrSalesBinding::inflate) {
                     is SalesActionStatus.ShowFinalFragment -> {
                         activity.enableWindow()
                         hideLoader()
-                        navigator.showFinalFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer,
-                            args = actionStatus.args.copy(
-                                description = requireContext().getString(actionStatus.descriptionPrefix)
-                                        + actionStatus.args.description
-                            )
+                        val arguments = actionStatus.args.copy(
+                            description = requireContext().getString(actionStatus.descriptionPrefix)
+                                    + actionStatus.args.description
+                        )
+                        findNavController().navigate(
+                            resId = R.id.action_global_finalFragment,
+                            args = bundleOf("final_args_key" to arguments)
                         )
                     }
                 }
@@ -122,7 +118,7 @@ class SalesFragment : BaseFragment<FrSalesBinding>(FrSalesBinding::inflate) {
                 navigationIcon =
                     ContextCompat.getDrawable(requireContext(), data.toolbarIcon)
                 setNavigationOnClickListener {
-                    requireActivity().supportFragmentManager.popBackStack()
+                    findNavController().popBackStack()
                 }
             }
 
@@ -137,13 +133,6 @@ class SalesFragment : BaseFragment<FrSalesBinding>(FrSalesBinding::inflate) {
                     data.btnNextClickListener.invoke(tietAmount.text?.toString().orEmpty())
                 }
             }
-        }
-    }
-
-    companion object {
-
-        fun newInstance(): SalesFragment {
-            return SalesFragment()
         }
     }
 }

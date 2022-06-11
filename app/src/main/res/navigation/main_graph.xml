@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.android_alex_shtain_assignment.main.MainFragment"
+        android:label="MainFragment">
+        <action
+            android:id="@+id/action_mainFragment_to_salesFragment"
+            app:destination="@id/salesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_receiptFragment"
+            app:destination="@id/receiptFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/salesFragment"
+        android:name="com.android_alex_shtain_assignment.sales.SalesFragment"
+        android:label="SalesFragment" />
+    <fragment
+        android:id="@+id/refundAmountFragment"
+        android:name="com.android_alex_shtain_assignment.refund.amount.RefundAmountFragment"
+        android:label="RefundAmountFragment">
+        <argument
+            android:name="receipt_number_key"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.android_alex_shtain_assignment.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/receiptFragment"
+        android:name="com.android_alex_shtain_assignment.refund.receipt.ReceiptFragment"
+        android:label="ReceiptFragment">
+        <action
+            android:id="@+id/action_receiptFragment_to_refundAmountFragment"
+            app:destination="@id/refundAmountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalFragment"
+        android:name="com.android_alex_shtain_assignment.final.FinalFragment"
+        android:label="FinalFragment">
+        <argument
+            android:name="final_args_key"
+            app:argType="com.android_alex_shtain_assignment.final.models.FinalArguments" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_finalFragment"
+        app:destination="@id/finalFragment"
+        app:popUpTo="@id/mainFragment" />
+</navigation>

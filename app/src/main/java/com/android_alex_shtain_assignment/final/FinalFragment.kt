@@ -5,10 +5,9 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.android_alex_shtain_assignment.core.base.BaseActivity
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.core.base.BaseFragment
 import com.android_alex_shtain_assignment.databinding.FrFinalBinding
-import com.android_alex_shtain_assignment.final.models.FinalArguments
 import com.android_alex_shtain_assignment.final.models.FinalUiData
 import com.android_alex_shtain_assignment.final.status.FinalActionStatus
 import com.android_alex_shtain_assignment.final.status.FinalUiStatus
@@ -22,7 +21,7 @@ class FinalFragment : BaseFragment<FrFinalBinding>(FrFinalBinding::inflate) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.setupUI(arguments?.getParcelable(FINAL_ARGUMENTS_KEY))
+            viewModel.setupUI(arguments?.getParcelable("final_args_key"))
         }
         subscribeUiStatuses()
         subscribeActionStatuses()
@@ -58,7 +57,7 @@ class FinalFragment : BaseFragment<FrFinalBinding>(FrFinalBinding::inflate) {
                         // do nothing
                     }
                     FinalActionStatus.ShowHomeScreen -> {
-                        (activity as? BaseActivity<*>)?.clearBackStack()
+                        findNavController().popBackStack()
                     }
                 }
             }
@@ -93,18 +92,5 @@ class FinalFragment : BaseFragment<FrFinalBinding>(FrFinalBinding::inflate) {
                 }
             }
         )
-    }
-
-    companion object {
-
-        private const val FINAL_ARGUMENTS_KEY = "final_arguments_key"
-
-        fun newInstance(args: FinalArguments): FinalFragment {
-            return FinalFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(FINAL_ARGUMENTS_KEY, args)
-                }
-            }
-        }
     }
 }

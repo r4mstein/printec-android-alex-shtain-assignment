@@ -3,29 +3,25 @@ package com.android_alex_shtain_assignment.refund.receipt
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.R
 import com.android_alex_shtain_assignment.core.base.BaseFragment
 import com.android_alex_shtain_assignment.core.extensions.*
-import com.android_alex_shtain_assignment.core.navigator.NavigatorApi
 import com.android_alex_shtain_assignment.databinding.FrReceiptBinding
 import com.android_alex_shtain_assignment.refund.receipt.models.ReceiptUiData
 import com.android_alex_shtain_assignment.refund.receipt.status.ReceiptActionStatus
 import com.android_alex_shtain_assignment.refund.receipt.status.ReceiptUiStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReceiptFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::inflate) {
 
     private val viewModel: ReceiptViewModel by viewModels()
-
-    @Inject
-    lateinit var navigator: NavigatorApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,10 +46,9 @@ class ReceiptFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::inflate
                     is ReceiptActionStatus.ShowNextFragment -> {
                         activity.enableWindow()
                         hideLoader()
-                        navigator.showRefundFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer,
-                            receiptNumber = actionStatus.receipt,
+                        findNavController().navigate(
+                            resId = R.id.action_receiptFragment_to_refundAmountFragment,
+                            args = bundleOf("receipt_number_key" to actionStatus.receipt)
                         )
                     }
                 }
@@ -126,7 +121,7 @@ class ReceiptFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::inflate
                 navigationIcon =
                     ContextCompat.getDrawable(requireContext(), data.toolbarIcon)
                 setNavigationOnClickListener {
-                    requireActivity().supportFragmentManager.popBackStack()
+                    findNavController().popBackStack()
                 }
             }
 
@@ -149,13 +144,6 @@ class ReceiptFragment : BaseFragment<FrReceiptBinding>(FrReceiptBinding::inflate
                     hideView()
                 }
             }
-        }
-    }
-
-    companion object {
-
-        fun newInstance(): ReceiptFragment {
-            return ReceiptFragment()
         }
     }
 }

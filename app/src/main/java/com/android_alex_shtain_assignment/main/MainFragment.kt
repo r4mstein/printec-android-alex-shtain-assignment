@@ -2,27 +2,22 @@ package com.android_alex_shtain_assignment.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.android_alex_shtain_assignment.R
 import com.android_alex_shtain_assignment.core.base.BaseFragment
-import com.android_alex_shtain_assignment.core.navigator.NavigatorApi
 import com.android_alex_shtain_assignment.databinding.FrMainBinding
 import com.android_alex_shtain_assignment.main.models.MainUiData
 import com.android_alex_shtain_assignment.main.status.MainActionStatus
 import com.android_alex_shtain_assignment.main.status.MainUIStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FrMainBinding>(FrMainBinding::inflate) {
 
     private val viewModel: MainViewModel by viewModels()
-
-    @Inject
-    lateinit var navigator: NavigatorApi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,22 +40,13 @@ class MainFragment : BaseFragment<FrMainBinding>(FrMainBinding::inflate) {
                         // do nothing
                     }
                     MainActionStatus.ShowSales -> {
-                        navigator.showSalesFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer
-                        )
+                        findNavController().navigate(R.id.action_mainFragment_to_salesFragment)
                     }
                     MainActionStatus.ShowRefund -> {
-                        navigator.showReceiptFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer
-                        )
+                        findNavController().navigate(R.id.action_mainFragment_to_receiptFragment)
                     }
                     MainActionStatus.ShowSettings -> {
-                        navigator.showSettingsFragment(
-                            activity = requireActivity() as AppCompatActivity,
-                            containerId = R.id.fragmentContainer
-                        )
+                        findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
                     }
                 }
             }
@@ -110,13 +96,6 @@ class MainFragment : BaseFragment<FrMainBinding>(FrMainBinding::inflate) {
                     data.settingsData.clickListener.invoke()
                 }
             }
-        }
-    }
-
-    companion object {
-
-        fun newInstance(): MainFragment {
-            return MainFragment()
         }
     }
 }
